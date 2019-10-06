@@ -1,23 +1,33 @@
 const router = require('express').Router();
-const { logout, localLogin, facebookLogin, googleLogin, googleRedirect, facebookRedirect } = require('../controllers/auth-controllers')
-const passport = require('passport')
+const { signup, logout, localLogin, facebookLogin, googleLogin, googleRedirect, facebookRedirect } = require('../controllers/auth-controllers')
+const passport = require('../config/passport')
 
-//Logout
+// Routes prefix: /api/auth
+
+// Signup
+router.post('/signup', signup, (req, res, next) => {
+  res.status(201).json({ message: 'User signed up' })
+})
+
+// Logout
 router.get('/logout', logout)
 
-// Login
-router.get('/login', localLogin)
+// Local Login
+router.post('/login', localLogin,
+  (req, res, next) => {
+    res.status(200).json({ message: 'Successfully logged in with local credentials', username: req.user.email })
+  })
 
-// Google login
+// Google Login
 router.get('/google', googleLogin)
 
 // Facebook Login
 router.get('/facebook', facebookLogin)
 
-// Callback route to /Facebook redirect
+// Callback route to Facebook redirect
 router.get('/facebook/redirect', passport.authenticate('facebook', { scope: 'email' }), facebookRedirect)
 
 // Callback route to Google redirect
-router.get('/google/redirect', passport.authenticate('google'), googleRedirect)
+router.get('/google/redirect', passport.authenticate('google', { scope: 'email' }), googleRedirect)
 
 module.exports = router;

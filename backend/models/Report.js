@@ -2,12 +2,15 @@ const { Schema, model } = require('mongoose')
 
 const reportSchema = new Schema(
   {
-    crimeType: ref('Crime'),
-    timestamp: Date,
+    crimeType: {
+      ref: 'Crime',
+      type: Schema.Types.ObjectId
+    },
+    reportDate: Date,
     location: {
       type: {
         default: "Point",
-        type: "String",
+        type: String
       }
     },
     coordinates: [Number],
@@ -23,7 +26,10 @@ const reportSchema = new Schema(
         }
       }
     ],
-    greetings: Number
+    greetings: {
+      type: Number,
+      default: 0
+    }
   },
   {
     timestamps: true,
