@@ -45,32 +45,6 @@ passport.use('signup', new LocalStrategy({
   }
 }))
 
-// Local Login config
-passport.use('login', new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password'
-}
-  , async (email, password, done) => {
-    try {
-      console.log('email', email)
-      await User.findOne({ username: email }, (err, user) => {
-        if (err) { return done(err) }
-        if (!user) {
-          console.log("invalidUser")
-          return done(null, false, { invalidUser: 'El usuario no existe, verifica tu email' })
-        }
-        if (!user.validPassword(password)) {
-          console.log("invalidPassword")
-          return done(null, false, { invalidPassword: "Contraseña incorrecta, verifica nuevamente" })
-        }
-        return done(null, user, { message: 'Sesión iniciada correctamente' })
-      })
-    } catch (error) {
-      // return done(error, false, { message: 'error...' })
-      console.log('err...', error)
-    }
-  }))
-
 //Facebook Login config
 passport.use(
   new FacebookStrategy({

@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react'
-import AUTH_SERVICE from '../services/auth'
+// import AUTH_SERVICE from '../services/auth'
 
 export const Context = createContext()
 
@@ -14,9 +14,9 @@ class Provider extends Component {
   }
 
   logOff = async () => {
-    try {
-      await 
-    }
+    // try {
+    //   await 
+    // }
   }
 
 }

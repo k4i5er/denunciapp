@@ -1,24 +1,37 @@
-const passport = require('passport')
+const passport = require('../config/passport')
 const jwt = require('jsonwebtoken')
 
-exports.signup = passport.authenticate('signup', { session: false }), async (req, res, next) => {
+exports.secureRoute = (req, res, next) => {
+  res.json({ message: 'Protected route, welcome', username: req.user, accessToken: req.query.accessToken })
+}
+
+exports.signup = async (req, res, next) => {
   console.log("Success...")
   res.status(201).json({
     message: 'Registro exitoso',
-    user: req.user
+    user: req.user.email
   })
 }
 
-exports.localLogin = (req, res, next) => {
-  passport.authenticate('local', function (err, user, info) {
-    if (err) { return next(err) }
-    if (!user) { return res.status(401).json({ message: 'Username/Password invalid' }) }
-    req.logIn(user, function (err) {
-      if (err) { return next(err) }
-      return next()
-    })
+exports.localLogin = async (req, res, next) => {
+  passport.authenticate('local', async (err, user, info) => {
+    try {
+      if (err || !user) {
+        const error = new Error('An error ocurred', err)
+        return next(error)
+      }
+      req.login(user, { session: false }, async (error) => {
+        if (error) return next(error)
+        const body = { _id: user._id, email: user.email }
+        const accessToken = jwt.sign({ user: body }, process.env.TOKEN_SECRET)
+        return res.json({ accessToken })
+      })
+    } catch (error) {
+      return next(error)
+    }
   })(req, res, next)
 }
+
 
 
 exports.logout = (req, res, next) => {
