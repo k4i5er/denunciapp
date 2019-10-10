@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = 'http://localhost:3000/api/auth'
+const baseURL = `${process.env.REACT_APP_BASEURL}/api/auth`
 
 const SERVICE = axios.create({ withCredentials: true, baseURL })
 

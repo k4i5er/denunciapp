@@ -56,7 +56,7 @@ passport.use(
     // profile: id,username,displayName,name,gender,profileUrl,provider,_raw,_json
     // console.log('Profile: ', profile)
     // console.log(`profile: ${profile._json.first_name}, ${profile._json.last_name}, ${profile._json.email}, ${profile._json.id}`)
-    const currentUser = await User.findOne({ facebookId: profile._json.id })
+    const currentUser = await Profile.findOne({ user: profile._json.id })
     if (currentUser) {
       done(null, currentUser)
     }
@@ -65,7 +65,12 @@ passport.use(
         email: profile._json.email,
         facebookId: profile._json.id,
       }).save()
-      done(null, newUser)
+      const newProfile = await new Profile({
+        user: profile._json.id,
+        name: profile._json.first_name,
+        lastName: profile._json.last_name
+      }).save()
+      done(null, newProfile)
     }
   })
 )
@@ -79,7 +84,8 @@ passport.use(
     clientSecret: process.env.GOOGLE_OAUTH_SECRET,
     profileFields: ['id', 'displayName', 'name', 'email']
   }, async (accessToken, refreshToken, profile, done) => {
-    const currentUser = await User.findOne({ googleId: profile.id })
+    console.log(">>>>>>>>",profile)
+    const currentUser = await Profile.findOne({ user: profile.id })
     if (currentUser) {
       done(null, currentUser)
     }
@@ -88,7 +94,11 @@ passport.use(
         email: profile._json.email,
         googleId: profile.id
       }).save()
-      done(null, newUser)
+      const newProfile = await new Profile({
+        name: profile._json.first_name,
+        lastName: profile._json.last_name
+      }).save()
+      done(null, newProfile)
     }
   })
 )

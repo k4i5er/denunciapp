@@ -6,26 +6,28 @@ const reportSchema = new Schema(
       ref: 'Crime',
       type: Schema.Types.ObjectId
     },
-    reportDate: Date,
+    date: Date,
+    address:{
+      street: String,
+      suburb: String,
+      zipCode: String,
+      city: String,
+      country: String,
+    },
     location: {
       type: {
         default: "Point",
         type: String
-      }
+      },
+      coordinates: [Number],
     },
-    coordinates: [Number],
-    photo: String,
+    photoURL: String,
     isAnonymous: Boolean,
     reportDescription: String,
-    comments: [
-      {
-        comment: String,
-        user: {
-          ref: 'Profile',
-          type: Schema.Types.ObjectId
-        }
-      }
-    ],
+    rating: {
+      type: Number,
+      default: 0
+    },
     greetings: {
       type: Number,
       default: 0
@@ -36,5 +38,7 @@ const reportSchema = new Schema(
     versionKey: false
   }
 )
+
+reportSchema.index({location: "2dsphere"})
 
 module.exports = model('Report', reportSchema)

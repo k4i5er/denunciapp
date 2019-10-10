@@ -5,7 +5,7 @@ const passport = require('../config/passport')
 // Routes prefix: /api/auth
 
 // Signup
-router.post('/signup', passport.authenticate('signup', { session: false }), signup)
+router.post('/signup', passport.authenticate('signup', { session: true }), signup)
 
 // Logout
 router.get('/logout', logout)

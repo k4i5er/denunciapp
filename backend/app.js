@@ -26,11 +26,13 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 
 const app = express();
 
+// const app = require('https-localhost')()
+
 /////////////////////////
 //CORS setup
 app.use(cors({
   credentials: true,
-  origin: [`http://localhost:${process.env.PORT}`]
+  origin: [`https://denunciapp.netlify.com`]
 }))
 
 // Session setup
@@ -73,10 +75,16 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 const authRoutes = require('./routes/auth-routes')
 app.use('/api/auth', authRoutes)
 
+const locationRoutes = require('./routes/location-routes')
+app.use('/api/location', locationRoutes)
+
 const index = require('./routes/index');
 app.use('/api', index);
 
 const mailRoutes = require('./routes/mail-routes')
 app.use('/api/mail', mailRoutes)
+
+const dataRoutes = require('./routes/data-routes')
+app.use('/api/data', dataRoutes)
 
 module.exports = app;

@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose')
 const crimeSchema = new Schema(
   {
     crimeName: String,
-    crimeType: String
+    crimeImg: String,
   },
   {
     timestamps: true,
