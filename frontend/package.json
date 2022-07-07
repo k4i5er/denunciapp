@@ -8,7 +8,7 @@
     "bulma-calendar": "^6.0.7",
     "bulmaswatch": "^0.7.5",
     "mapbox-gl": "^1.4.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-sass": "^4.12.0",
     "react": "^16.10.2",
     "react-datetime": "^2.16.3",
